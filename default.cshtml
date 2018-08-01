@@ -1,17 +1,19 @@
 ﻿@using System.Configuration
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <meta charSet="utf-8"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossOrigin="anonymous"/>
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"/>
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:700"/>
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Overpass+Mono:700"/>
-        <link rel="stylesheet" href="https://dddperth.com/_next/static/style.css"/>
-    </head>
+<head>
+    <title>Prize Draw - DDD Perth 2018</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://dddperth.com/static/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charSet="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossOrigin="anonymous"/>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"/>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:700"/>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Overpass+Mono:700"/>
+    <link rel="stylesheet" href="https://dddperth.com/_next/static/style.css"/>
+</head>
 <body>
 <style>
     #people {
@@ -103,7 +105,7 @@
             url: '@ConfigurationManager.AppSettings["PrizeDrawApiUrl"]',
             success: function (data) {
                 var newlis = data.reduce(function (c, d) {
-                    return c + "<li>" + d + "</li>";
+                    return c + "<li>" + $('<div/>').text(d).html() + "</li>";
                 }, '');
                 for (var i = 0; i < iterations; i++) {
                     $(newlis).clone().appendTo(ul);
