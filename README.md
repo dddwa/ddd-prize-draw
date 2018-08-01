@@ -1,2 +1,3 @@
-# PrizeDraw
-Interface to conduct the prize draw
+# Prize draw interface
+
+Interface to conduct the prize draw at DDD conferences.

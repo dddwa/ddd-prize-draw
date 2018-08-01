@@ -1,0 +1,122 @@
+﻿@using System.Configuration
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta charSet="utf-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossOrigin="anonymous"/>
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"/>
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:700"/>
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Overpass+Mono:700"/>
+        <link rel="stylesheet" href="https://dddperth.com/_next/static/style.css"/>
+    </head>
+<body>
+<style>
+    #people {
+        margin-left: 20px;
+        height: 80px;
+        background-color: #efefef;
+        padding: 5px 30px 5px 10px;
+        overflow: hidden;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    #people li {
+        font-size: 50px;
+        overflow: hidden;
+        height: 80px;
+        margin-bottom: 30px;
+    }
+
+    #people li:before {
+        display: none;
+    }
+
+    #spin {
+        float: right;
+    }
+
+    .sub {
+        font-size: 0.8em;
+        margin-top: 50px;
+    }
+
+    .cover {
+        color: transparent;
+    }
+
+    .pinklogo {
+        background-color: #DC0081;
+        text-align: center;
+    }
+
+        .pinklogo img {
+            width: 200px;
+        }
+</style>
+<header>
+    <h1 class="logo">DDD Perth 2018</h1>
+</header>
+<div class="container">
+    <h2>Prize Draw!</h2>
+    <p>And the winner is...</p>
+    <ul id="people" class="cover"></ul>
+
+    <button class="btn btn-secondary" id="spin">Spin!</button>
+    <div style="clear:both;"></div>
+    <p><small>Based on @@YiJiang's awesome <a href="http://jsfiddle.net/yijiang/AYPpF/24/">Wheel of Blame</a> which uses the <a href="http://gsgd.co.uk/sandbox/jquery/easing/">jquery easing</a> plugin by gsgd.</small></p>
+</div>
+<div class="pinklogo">
+    <img src="logo.png" alt="DDD Perth 2018"/>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<script type="text/javascript">
+    var ul = $('#people');
+    spinBtn = $('#spin');
+    var iterations = 2;
+
+    function spin() {
+        $('#people').removeClass("cover");
+        spinBtn.attr('disabled', true).text('Hang on!');
+
+        var li = $('#people li');
+        var count = li.length / iterations;
+        var newPos = -(li.first().outerHeight(true) * (Math.floor(Math.random() * count) + count * (iterations - 1))) - 5;
+        li.first().animate({ marginTop: newPos }, 3000, 'easeOutCubic', function () {
+            spinBtn.attr('disabled', false).text('Spin Again!');
+        });
+    }
+
+
+    // retrieve
+    (function () {
+        $.ajax({
+            url: '@ConfigurationManager.AppSettings["PrizeDrawApiUrl"]',
+            success: function (data) {
+                var newlis = data.reduce(function (c, d) {
+                    return c + "<li>" + d + "</li>";
+                }, '');
+                for (var i = 0; i < iterations; i++) {
+                    $(newlis).clone().appendTo(ul);
+                }
+                spinBtn.click(function () {
+                    $('#people li').first().css('margin-top', 0);
+                    spin();
+                    return false;
+                });
+            }
+        });
+    })();
+
+</script>
+</body>
+</html>
