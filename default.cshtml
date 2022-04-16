@@ -89,6 +89,7 @@
         var ul = $('#people');
         spinBtn = $('#spin');
         var iterations = 2;
+        var candidates = [];
 
         function spin() {
             $('#people').removeClass("cover");
@@ -96,7 +97,17 @@
 
             var li = $('#people li');
             var count = li.length / iterations;
-            var newPos = -(li.first().outerHeight(true) * (Math.floor(Math.random() * count) + count * (iterations - 1))) - 5;
+
+            if (candidates.length === 0) {
+                for (var i = 0; i < count; i++) {
+                    var thisPos = -(li.first().outerHeight(true) * (i + count * (iterations - 1))) - 5;
+                    candidates.push(thisPos)
+                }
+            }
+
+            var randomIndex = Math.floor(Math.random() * candidates.length);
+            var newPos = candidates.splice(randomIndex, 1)[0];
+            
             li.first().animate({ marginTop: newPos }, 3000, 'easeOutCubic', function () {
                 spinBtn.attr('disabled', false).text('Spin Again!');
             });
